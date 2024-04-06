@@ -1,45 +1,44 @@
-import { Component, OnDestroy, OnInit, effect } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, effect, OnDestroy, OnInit } from '@angular/core';
 import { ThemeService } from 'src/app/core/services/theme.service';
 import { ChartOptions } from '../../../../../shared/models/chart-options';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: '[nft-chart-card]',
+  selector: 'nft-chart-card',
   templateUrl: './nft-chart-card.component.html',
   standalone: true,
-  imports: [AngularSvgIconModule, NgApexchartsModule],
+  imports: [AngularSvgIconModule, NgApexchartsModule, ReactiveFormsModule],
 })
 export class NftChartCardComponent implements OnInit, OnDestroy {
   public chartOptions: Partial<ChartOptions>;
 
-  constructor(private themeService: ThemeService) {
-    let baseColor = '#FFFFFF';
-    const data = [2100, 3200, 3200, 2400, 2400, 1800, 1800, 2400, 2400, 3200, 3200, 3000, 3000, 3250, 3250];
-    const categories = [
-      '10AM',
-      '10.30AM',
-      '11AM',
-      '11.15AM',
-      '11.30AM',
-      '12PM',
-      '1PM',
-      '2PM',
-      '3PM',
-      '4PM',
-      '5PM',
-      '6PM',
-      '7PM',
-      '8PM',
-      '9PM',
-    ];
+  formGroup: FormGroup;
 
+  data = [29000, 44000, 36000, 37000, 32500, 32500, 35500,]
+  categories = [
+    'Salaire 1',
+    'Salaire 2',
+    'Salaire 3',
+    'Salaire 4',
+    'Salaire 5',
+    'Salaire 6',
+    'Salaire 7',
+  ];
+
+  sub: Subscription = new Subscription();
+  constructor(private themeService: ThemeService, private fb: FormBuilder) {
+    let baseColor = '#FFFFFF';
+    this.formGroup = this.fb.group({
+      salaire: [0]
+    })
     this.chartOptions = {
       series: [
         {
-          name: 'Etherium',
-          data: data,
+          name: 'Salaires',
+          data: this.data,
         },
       ],
       chart: {
@@ -72,7 +71,7 @@ export class NftChartCardComponent implements OnInit, OnDestroy {
         colors: [baseColor], // line color
       },
       xaxis: {
-        categories: categories,
+        categories: this.categories,
         labels: {
           show: false,
         },
@@ -137,7 +136,46 @@ export class NftChartCardComponent implements OnInit, OnDestroy {
     return `#${f(0)}${f(8)}${f(4)}`;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.sub.add(
+      this.formGroup.valueChanges.subscribe(value => {
+
+      })
+    )
+  }
 
   ngOnDestroy(): void {}
+
+  get mean(): number {
+    const sum = this.data.reduce((a, b) => a + b, 0);
+    return Math.round(sum / this.data.length) || 0;
+  }
+
+  get median(): number {
+
+    if (this.data.length === 0) {
+      throw new Error('Input array is empty');
+    }
+
+    // Sorting this.data, preventing original array
+    // from being mutated.
+    this.data = [...this.data].sort((a, b) => a - b);
+
+    const half = Math.floor(this.data.length / 2);
+
+    return (this.data.length % 2
+        ? this.data[half]
+        : (this.data[half - 1] + this.data[half]) / 2
+    );
+  }
+
+  percentAbove(): number {
+    let nb = 0;
+    const salaire = this.formGroup.value.salaire;
+    this.data.forEach(value => {
+      if (value > salaire) nb++;
+    })
+
+    return Math.round((nb/this.data.length)*100);
+  }
 }

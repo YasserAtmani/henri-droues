@@ -18,7 +18,11 @@ export class ThemeService {
   private loadTheme() {
     const theme = localStorage.getItem('theme');
     if (theme) {
-      this.theme.set(JSON.parse(theme));
+      console.log(theme)
+      this.theme.set({
+        mode: theme,
+        color: 'base'
+      });
     }
   }
 

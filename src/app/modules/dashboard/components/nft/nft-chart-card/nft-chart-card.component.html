@@ -1,36 +1,33 @@
 <div class="flex-col rounded-lg bg-background px-8 py-8 sm:flex-row">
   <!-- Card Header -->
   <div class="mb-2 flex items-center justify-between">
-    <div class="flex-col">
+    <div class="flex-col gap-4">
       <div class="flex items-center space-x-1">
-        <span class="text-lg font-semibold text-muted-foreground">$</span>
-        <span class="text-4xl font-semibold text-foreground">3,274.94</span>
+        <span class="text-4xl font-semibold text-foreground">Où vous situez-vous sur l'échelle des salaires CBA ?</span>
         <div class="flex items-center rounded-md bg-green-500/25 py-1 pr-2 pl-1 text-xs font-semibold text-green-500">
           <svg-icon src="assets/icons/heroicons/outline/arrow-sm-up.svg" [svgClass]="'h-4 w-4'"></svg-icon>
-          9.2%
+          1.8% - NAO 2024
         </div>
       </div>
-      <span class="text-sm text-muted-foreground">Etherium rate</span>
-    </div>
-    <div
-      class="cursor-pointer rounded-sm bg-card px-1 py-1 text-center text-xs text-muted-foreground hover:bg-muted hover:text-foreground">
-      <svg-icon src="assets/icons/heroicons/outline/dots-horizontal.svg" [svgClass]="'h-3 w-3'"></svg-icon>
-    </div>
-  </div>
-  <!-- end Card Header -->
-  <div class="mb-3 grid grid-cols-5 items-center justify-between gap-2 text-center">
-    <div class="cursor-pointer rounded-md bg-primary p-0.5 text-sm text-primary-foreground hover:bg-primary">1d</div>
-    <div class="cursor-pointer rounded-md p-0.5 text-sm text-gray-400 hover:bg-primary hover:text-primary-foreground">
-      5d
-    </div>
-    <div class="cursor-pointer rounded-md p-0.5 text-sm text-gray-400 hover:bg-primary hover:text-primary-foreground">
-      1m
-    </div>
-    <div class="cursor-pointer rounded-md p-0.5 text-sm text-gray-400 hover:bg-primary hover:text-primary-foreground">
-      6m
-    </div>
-    <div class="cursor-pointer rounded-md p-0.5 text-sm text-gray-400 hover:bg-primary hover:text-primary-foreground">
-      1y
+      <div class="flex flex-col my-4">
+        <span class="text-sm text-muted-foreground">Données 2024 recueillies anonymement et vérifiées </span>
+        <span class="text-sm text-muted-foreground">Moyenne des salaires - {{ mean }}€/an </span>
+        <span class="text-sm text-muted-foreground">Médiane des salaires - {{ median }}€/an </span>
+      </div>
+      <div class="text-left flex items-center gap-4" [formGroup]="formGroup">
+
+        <span class="text-sm text-muted-foreground">Votre salaire : </span>
+        <div class="w-fit relative">
+          <input type="number" id="wage" class="peer block" placeholder=" " formControlName="salaire"/>
+          <label
+            for="wage"
+            class="absolute top-2 left-1 z-10 origin-[0] -translate-y-4 scale-95 transform bg-background px-2 text-sm text-muted-foreground duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-95 peer-focus:px-2 peer-focus:text-primary">
+            Salaire annuel
+          </label>
+        </div>
+      </div>
+
+      <span class="text-sm text-muted-foreground">{{ percentAbove() }}% touchent plus que vous </span>
     </div>
   </div>
   <!-- Card Body -->
@@ -50,55 +47,4 @@
     [title]="chartOptions.title!">
   </apx-chart>
   <!-- end Chart -->
-
-  <!--Table-->
-  <table class="mt-2 w-full table-auto text-sm">
-    <!--begin::Table head-->
-    <thead>
-      <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <!--end::Table head-->
-    <!--begin::Table body-->
-    <tbody>
-      <tr>
-        <td class="py-2">
-          <a class="text-sm font-semibold text-muted-foreground">2:30 PM</a>
-        </td>
-        <td class="py-2 text-right">
-          <span class="text-sm font-semibold text-foreground">$2,756.26</span>
-        </td>
-        <td class="py-2 text-right">
-          <span class="text-sm font-semibold text-rose-600">-139.34</span>
-        </td>
-      </tr>
-      <tr>
-        <td class="py-2">
-          <a class="text-sm font-semibold text-muted-foreground">3:10 PM</a>
-        </td>
-        <td class="py-2 text-right">
-          <span class="text-sm font-semibold text-foreground">$3,207.03</span>
-        </td>
-        <td class="py-2 text-right">
-          <span class="text-sm font-semibold text-green-500">+576.24</span>
-        </td>
-      </tr>
-      <tr>
-        <td class="py-2">
-          <a class="text-sm font-semibold text-muted-foreground">3:55 PM</a>
-        </td>
-        <td class="py-2 text-right">
-          <span class="text-sm font-semibold text-foreground">$3,274.94</span>
-        </td>
-        <td class="py-2 text-right">
-          <span class="text-sm font-semibold text-green-500">+124.03</span>
-        </td>
-      </tr>
-    </tbody>
-    <!--end::Table body-->
-  </table>
-  <!--end Table-->
 </div>

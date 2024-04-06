@@ -11,6 +11,7 @@
   </button>
   <!-- Dropdown  -->
   <div
+    *ngIf="menu.items.length > 0"
     class="dropdown-content absolute top-[100%] min-w-[200px] origin-top-left"
     navbar-submenu
     [submenu]="menu.items"></div>
